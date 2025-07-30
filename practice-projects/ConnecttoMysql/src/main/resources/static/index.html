@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Submit User Data</title>
+</head>
+<body>
+<h1>User Form</h1>
+<form id="userForm">
+    <label>Name: <input type="text" id="name" required></label><br><br>
+    <label>Email: <input type="email" id="email" required></label><br><br>
+    <button type="submit">Submit</button>
+</form>
+
+<h2>Response:</h2>
+<p id="responseText"></p>
+
+<script>
+    const form = document.getElementById('userForm');
+    const responseText = document.getElementById('responseText');
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent page reload
+
+        const data = {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value
+        };
+
+        fetch('http://localhost:8080/api/user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.text())
+        .then(result => {
+            responseText.textContent = result;
+        })
+        .catch(error => {
+            responseText.textContent = 'Error: ' + error;
+        });
+    });
+</script>
+</body>
+</html>
